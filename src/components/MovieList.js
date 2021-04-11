@@ -5,7 +5,8 @@ export default class MovieList extends Component {
     render() {
         return (
             <div className="row">
-                {this.props.movies.map((movie) =>)}
+                {this.props.movies.map((movie) => (
+
                 <div className="col-lg-4">
                     <div className= "card mb-4 shadow-sm">
                         <img src= "https://image.tmdb.org/t/p/w220_and_h330_face/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg" className="card-img-top" alt="Sample Movie"/>
@@ -19,7 +20,7 @@ export default class MovieList extends Component {
                         </div>
                     </div>
                 </div>
-                )}; 
+                ))}; 
             </div>
             
         )
