@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 
 export default class SearchBar extends Component {
     
-    state = {
-        search: ""
+    handleFormSubmit = (e) => {
+        e.preventDefault()
     }
 
     render() {
@@ -13,10 +13,10 @@ export default class SearchBar extends Component {
                 <div className="form-row mb-5">
                     <div className="col-12">
                         <input 
-                        onChange={(e) => this.setState({search: e.target.value})}  
+                        onChange={this.props.searchMovieProp}  
                         type="text" className="form-control" 
                         placeholder="Search a movie"
-                        value={this.state.search} />
+                         />
                     </div>
                 </div>
             </form>
