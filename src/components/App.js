@@ -39,30 +39,102 @@ class App extends React.Component {
 
     }
 
+    
+    addMovie = async (movie) => {
+        await axios.post(`http://localhost:3002/movies/`, movie)
+        this.setState(state => ({
+            movies: state.movies.concat([movie])
+        }))
+
+        this.getMovies();
+    }
+
+    editMovie = async (id, updatedMovie) => {
+        await axios.put(`http://localhost:3002/movies/${id}`, updatedMovie)
+        this.getMovies();
+    }
+
+
+
     render() {
         let filteredMovies = this.state.movies.filter(
             (movie) => {
-                return movie.name.indexOf(this.state.searchQuery) !== -1
+                return movie.name.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
             }
-        )
-        return (
-           <div className="container">
-               <div className="row">
-                   <div className="col-lg-12">
-                       <SearchBar searchMovieProp={this.searchMovie} />
-                   </div>
-               </div>
+        ).sort((a, b) => {
+            return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
+        });
 
-               <MovieList 
-                    movies={filteredMovies}
-                    deleteMovieProp={this.deleteMovie}
-               />
-               
-           </div>
-            )
+        return (
+            <Router>
+
+                <div className="container">
+
+                    <Switch>
+
+
+                        <Route path="/" exact render={() => (
+                            <React.Fragment>
+                                <div className="row">
+                                    <div className="col-lg-12">
+                                        <SearchBar searchMovieProp={this.searchMovie} />
+                                    </div>
+                                </div>
+
+
+                                <MovieList
+                                    movies={filteredMovies}
+                                    deleteMovieProp={this.deleteMovie}
+
+                                />
+                            </React.Fragment>
+                        )}>
+
+                        </Route>
+
+                        <Route path="/add" render={({ history }) => (
+
+                            <AddMovie
+
+                                onAddMovie={(movie) => {
+                                    this.addMovie(movie)
+                                    history.push("/")
+                                }
+                                }
+
+                            />
+
+                        )}>
+
+                        </Route>
+
+                        <Route path="/edit/:id" render={(props) => (
+
+                            <EditMovie
+                                {...props}
+                                onEditMovie={(id, movie) => {
+                                    this.editMovie(id, movie)
+                                }
+                                }
+
+                            />
+
+                        )}>
+
+                        </Route>
+
+                    </Switch>
+                </div>
+
+            </Router>
+        )
 
     }
-    
+
+
 }
+
+    
+
 
 export default App;
