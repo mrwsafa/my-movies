@@ -1,41 +1,44 @@
 import React from 'react';
 import SearchBar from './SearchBar';
 import MovieList from './MovieList';
+import AddMovie from './AddMovie';
+import EditMovie from './EditMovie';
 import axios from 'axios';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-const movies =[
-   
-]
+
 
 
 class App extends React.Component {
     state = {
-        movies: [
-           
-        ],
-
+        movies: [],
         search: "" 
         
     }
 
-    async componentDidMount() {
-        const response = await axios.get("http://localhost:3002/movies")
-        this.setState({movies: response.data})
-
-        
+    componentDidMount() {
+        this.getMovies();
     }
+
+    async getMovies() {
+        const response = await axios.get("http://localhost:3002/movies");
+        this.setState({ movies: response.data })
+    }
+
     deleteMovie = async (movie) => {
-        axios.delete(`http://localhost:3002/movies/${movies.id}`)
+
+        axios.delete(`http://localhost:3002/movies/${movie.id}`)
         const newMovieList = this.state.movies.filter(
-            m => m.id !==movie.id
-        )
+            m => m.id !== movie.id
+        );
         this.setState(state => ({
             movies: newMovieList
         }))
     }
 
+
     searchMovie = (e) => {
-        this.setState({searchQuery: e.target.value})
+        this.setState({search: e.target.value})
 
     }
 
@@ -59,7 +62,7 @@ class App extends React.Component {
     render() {
         let filteredMovies = this.state.movies.filter(
             (movie) => {
-                return movie.name.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
+                return movie.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
             }
         ).sort((a, b) => {
             return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;

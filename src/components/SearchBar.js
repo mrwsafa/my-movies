@@ -1,5 +1,5 @@
-
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class SearchBar extends Component {
     
@@ -11,7 +11,7 @@ export default class SearchBar extends Component {
         return (
             <form onSubmit={this.handleFormSubmit}>
                 <div className="form-row mb-5">
-                    <div className="col-12">
+                    <div className="col-10">
                         <input 
                         onChange={this.props.searchMovieProp}  
                         type="text" className="form-control" 
